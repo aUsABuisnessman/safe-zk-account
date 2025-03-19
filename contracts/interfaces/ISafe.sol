@@ -42,7 +42,7 @@ interface ISafe is IModuleManager, IGuardManager, IOwnerManager, IFallbackManage
         address payable paymentReceiver
     ) external;
 
-    /** @notice Executes a `operation` {0: Call, 1: DelegateCall}} transaction to `to` with `value` (Native Currency)
+    /** @notice Executes a `operation` {0: Call, 1: DelegateCall} transaction to `to` with `value` (Native Currency)
      *          and pays `gasPrice` * `gasLimit` in `gasToken` token to `refundReceiver`.
      * @dev The fees are always transferred, even if the user transaction fails.
      *      This method doesn't perform any sanity check of the transaction, such as:
@@ -76,12 +76,15 @@ interface ISafe is IModuleManager, IGuardManager, IOwnerManager, IFallbackManage
     ) external payable returns (bool success);
 
     /**
-     * @notice Checks whether the signature provided is valid for the provided data and hash. Reverts otherwise.
+     * @notice Checks whether the signature provided is valid for the provided data and hash and executor. Reverts otherwise.
+     * @param executor Address that executes the transaction.
+     *        ⚠️⚠️⚠️ Make sure that the executor address is a legitimate executor.
+     *        Incorrectly passed the executor might reduce the threshold by 1 signature. ⚠️⚠️⚠️
      * @param dataHash Hash of the data (could be either a message hash or transaction hash)
      * @param signatures Signature data that should be verified.
      *                   Can be packed ECDSA signature ({bytes32 r}{bytes32 s}{uint8 v}), contract signature (EIP-1271) or approved hash.
      */
-    function checkSignatures(bytes32 dataHash, bytes memory signatures) external view;
+    function checkSignatures(address executor, bytes32 dataHash, bytes memory signatures) external view;
 
     /**
      * @notice Checks whether the signature provided is valid for the provided data and hash. Reverts otherwise.

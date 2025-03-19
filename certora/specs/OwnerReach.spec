@@ -4,7 +4,7 @@
  * This file uses a reach predicate:
  *    ghost reach(address, address) returns bool
  * to represent the transitive relation of the next
- * relation given byt the "owners" field.
+ * relation given by the "owners" field.
  *
  * The idea comes from the paper
  *
@@ -289,7 +289,7 @@ rule isOwnerDoesNotRevert {
     assert !lastReverted, "isOwner should not revert";
 }
 
-rule isOwnerNotSelfOrSentinal {
+rule isOwnerNotSelfOrSentinel {
     address addr;
     require addr == currentContract || addr == SENTINEL;
     requireInvariant self_not_owner();
